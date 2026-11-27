@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Any, Generic, TypeVar
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 T = TypeVar("T")
 
@@ -27,5 +27,9 @@ class EntryPayload(BaseModel):
 
 
 class ActionPayload(BaseModel):
+    # 争议裁决等动作可能携带 value/sample_id/source 等额外字段；保留它们，
+    # 由支持详细动作的领域服务自行解释，通用模块仍只使用 action/remark。
+    model_config = ConfigDict(extra="allow")
+
     action: str
     remark: str | None = None

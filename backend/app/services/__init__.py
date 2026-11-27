@@ -7,6 +7,7 @@ from app.services.protocol_cfg import ProtocolCfgService
 from app.services.msg_decode import MsgDecodeService
 from app.services.msg_router import MsgRouterService
 from app.services.ts_point import TsPointService
+from app.services.ts_dispute import TsDisputeService
 from app.services.ts_store import TsStoreService
 from app.services.downsample import DownsampleService
 from app.services.alarm_trigger import AlarmTriggerService
@@ -27,6 +28,11 @@ SERVICES: dict[str, BaseModuleService] = {
     "msg_decode": MsgDecodeService(),
     "msg_router": MsgRouterService(),
     "ts_point": TsPointService(),
+    "ts_dispute": TsDisputeService(),
+    "ts_disputes": TsDisputeService(),
+    "ts_conflict": TsDisputeService(),
+    "dispute_order": TsDisputeService(),
+    "sample_dispute": TsDisputeService(),
     "ts_store": TsStoreService(),
     "downsample": DownsampleService(),
     "alarm_trigger": AlarmTriggerService(),

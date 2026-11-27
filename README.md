@@ -79,3 +79,26 @@ npm run dev
 
 领域：数据工程
 子方向：数据采集、爬虫与RPA
+
+## 时序同位冲突与争议处理
+
+时序测点工作台（也可从左侧“争议处理单”进入）内置 P 点 11:00 验收场景：
+
+- 同一 `(测点, 采样时间)` 且数值相同的重送按幂等样本处理，只增加投递次数，不新增有效样本。
+- 另一渠道上报异值会保留来源、投递记录和核对依据，并生成 `DSP-P-1100` 争议处理单。
+- 操作员可在弹窗中查看两个来源，选择采用值并登记/回看采用依据与拒绝依据。
+- 裁决后该采样位置只有一个 `is_valid=true` 的样本；服务端只处理依赖该位置且尚未签收的窗口。
+- `WIN-P-1100` 会从预读 10 改按裁决值 14 核对并正式出值，`WIN-P-1200-SIDE` 等无关窗口不参与重算。
+
+主要接口前缀：
+
+```text
+GET  /api/ts_point/reconciliation/state
+POST /api/ts_point/samples
+GET  /api/ts_point/disputes
+POST /api/ts_point/disputes/{dispute_id}/adjudicate
+POST /api/ts_point/windows/{window_id}/continue
+POST /api/ts_point/scenario/reset
+```
+
+同时提供 `/api/ts_dispute` 通用资源映射，便于通过统一列表/动作接口查询和裁定。
